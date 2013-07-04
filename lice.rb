@@ -20,6 +20,9 @@ module Lice
         end
 
         def addLine line
+            if !@cacheArray.empty?
+                line = @cacheArray[0] + " " + line
+                @cacheArray.clear 
             if LiceParser.checkLine(line) 
                 @liceArray.push line
             else
