@@ -19,6 +19,12 @@ class TestLineLength < Test::Unit::TestCase
     def test_liceParser_addLine
         testLice = Lice::LiceParser.new
         testLice.addLine "this is a short line"
-        assert_equal(testLice.size, 1)
+        assert_equal(testLice.size, [1, 0])
+    end
+
+    def test_liceParser_addLine_long
+        testLice = Lice::LiceParser.new
+        testLice.addLine @line
+        assert_equal(testLice.size, [1,1])
     end
 end
