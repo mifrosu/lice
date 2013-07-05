@@ -20,13 +20,14 @@ class TestLineLength < Test::Unit::TestCase
 
     def test_LiceParser_addLine
         @testLice.addLine @shortLine 
-        assert_equal(@testLice.size, [1, 0])
-        assert_equal(@testLice.liceArray[0],
-                     "this is a short line".ljust(75))
+        assert_equal([1, 0], @testLice.size)
+        # Note MAX_TEXT_WIDTH set to 75 in LiceParser
+        assert_equal("this is a short line".ljust(75), 
+                     @testLice.liceArray[0])
     end
 
     def test_LiceParser_addLine_long
         @testLice.addLine @line
-        assert_equal(@testLice.size, [1,1])
+        assert_equal([1, 1], @testLice.size)
     end
 end
