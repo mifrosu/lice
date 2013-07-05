@@ -1,4 +1,4 @@
-require "../lice"
+require_relative "../lib/lice/lice_parser"
 require "test/unit"
 
 class TestLineLength < Test::Unit::TestCase
