@@ -10,6 +10,7 @@ module Lice
 
         def initialize(argv)
             parse(argv) 
+            # after parse remaining arguments are stored in array
             @fileNameArray = Array.new(argv)
             
         end
