@@ -6,6 +6,10 @@ require_relative '../lib/lice/lice_options'
 
 class TestLiceOptions < Test::Unit::TestCase
 
+    def exit(*args)
+        nil
+    end
+
     context "specifying no arguments" do
         should "trigger return help" do
         end

@@ -36,6 +36,14 @@ module Lice
 
             end
 
+            if argv.size <= 1
+                puts
+                puts "Error: too few file names supplied"
+                puts opts.help
+                puts
+                exit(-1)
+            end
+
         end
 
 

@@ -3,6 +3,9 @@
 module Lice
     
     class LiceParser
+        # Reads in a licence text, line by line, into an array. Lines are
+        # reflowed and padded to maintain a consistent length.
+        #
         # The MAX_WIDTH should be 79 chars. We will allow 4 chars for a single
         # char comment character and a space at both ends of the line.
         # We will set MAX_TEXT_WIDTH to be 75.
