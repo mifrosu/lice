@@ -6,22 +6,25 @@ module Lice
         # Reads in a licence text, line by line, into an array. Lines are
         # reflowed and padded to maintain a consistent length.
         #
-        # The MAX_WIDTH should be 79 chars. We will allow 4 chars for a single
-        # char comment character and a space at both ends of the line.
-        # We will set MAX_TEXT_WIDTH to be 75.
+        # The MAX_WIDTH should be 79 chars. The commentSize argument passed
+        # to the class upon initialization will determine the max text width
+        # to allow for comments and padding
 
         MAX_WIDTH = 79
-        MAX_TEXT_WIDTH = 75
+        @maxTextWidth = 75
+        #MAX_TEXT_WIDTH = 75
 
         attr_reader :liceArray
         
-        def initialize
+        def initialize commentSize
             @liceArray = Array.new
             @cacheArray = Array.new
+            # allow for comment symbols and 1 space either end
+            @maxTextWidth = MAX_WIDTH - (2*commentSize + 2)
         end
 
         def LiceParser.checkLine line
-            if line.size > MAX_TEXT_WIDTH
+            if line.size > @maxTextWidth
                 false
             else
                 true
@@ -30,7 +33,7 @@ module Lice
 
         def processLine line
             # left justify and pad line with spaces
-            return line.ljust(MAX_TEXT_WIDTH)
+            return line.ljust(@maxTextWidth)
         end
 
         def addLine line
@@ -42,7 +45,7 @@ module Lice
             if LiceParser.checkLine(line) 
                 @liceArray.push processLine(line) 
             else
-                breakIndex = line.rindex(/\s/,MAX_TEXT_WIDTH-1)
+                breakIndex = line.rindex(/\s/,@maxTextWidth-1)
                 @liceArray.push processLine(line[0..breakIndex-1])
                 @cacheArray.push line[breakIndex+1..-1]
             end
