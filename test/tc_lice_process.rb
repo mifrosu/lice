@@ -33,7 +33,7 @@ class TestLiceProcess < Test::Unit::TestCase
             "perl.pm", "perl.t", "perl.pod", "ruby-vim.vim", "thesis.tex",
             "erlang.erl", "erlang_header.hrl", "haskell.hs", "hask.lhs"]
             commentHash = {
-                :c_style => ["/**", "*", "*/"],
+                :c_style => ["/*", "*", "*/"],
                 :cpp_style => ["//"],
                 :script_style => ["#"],
                 :vim_style => ["\""], 
@@ -70,24 +70,15 @@ class TestLiceProcess < Test::Unit::TestCase
         end
 
         should "identify file from hash bang line if no file name suffix" do
-           # This test may only be run from lice/test/ or lice/
-            testScript = nil 
-            if Dir.pwd.match /lice$/
-               testScript = Dir.pwd + "/test/test_script" 
-            elsif Dir.pwd.match /lice\/test$/
-                testScript = "test_script"
+            testScript = "./test_script"
+            File.open(testScript, 'w') do |file|
+                ["#!/usr/bin/env ruby", 
+                 "#some text"].each { |line| file.puts line }
             end
+
             if testScript 
-                assert_equal(["#"], Lice::LiceProcess.getComment(testScript),
-                        "Check working directory is lice/ or lice/test/")
-            else
-                puts
-                puts
-                puts "*************************************************"
-                puts "* Note: hash bang ID test has not been run!     *"
-                puts "* The test must be run from lice/ or lice/test/ *"
-                puts "*************************************************"
-                puts
+                assert_equal(["#"], Lice::LiceProcess.getComment(testScript))
+                File.delete(testScript)
             end
         end
     end
