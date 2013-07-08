@@ -3,10 +3,13 @@
 require_relative "./lice_parser"
 
 module Lice
+
     class LiceProcess
+        # Identifies the file type from the file name suffix, or from 
+        # the presence of a hash bang line.  
 
         @@LANG_COMMENTS = {
-            :c_style => ["/**", "*", "*/"],
+            :c_style => ["/*", "*", "*/"],
             :cpp_style => ["//"],
             :script_style => ["#"],
             :vim_style => ["\""], 
@@ -38,12 +41,11 @@ module Lice
             "lhs" => :haskell
         }
 
-        attr_reader :licenceFileName
-        attr_reader :sourceFileArray
+        #attr_reader :licenceFileName
+        #attr_reader :sourceFileArray
         
-        def initialize fileNameArray
-            @sourceFileArray = fileNameArray
-            @licenceFileName = @sourceFileArray.shift
+        def initialize fileName
+            @fileName 
         end
 
         def LiceProcess.getSuffix fileName

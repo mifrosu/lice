@@ -6,32 +6,6 @@ require_relative "../lib/lice/lice_process"
 
 class TestLiceProcess < Test::Unit::TestCase
 
-        
-
-    context "reading fileNameArray" do
-
-        setup do
-            @fileNameArray = ["licence.txt", "src1.rb", "src2.py", "src3.sh"]
-            @testProcess = Lice::LiceProcess.new(@fileNameArray)
-            
-        end
-        should "identify item 0 as licence file" do
-            assert_equal("licence.txt", @testProcess.licenceFileName)
-        end
-
-        should "shift licenceFileName from array" do
-            assert_equal(["src1.rb", "src2.py", "src3.sh"],
-                         @testProcess.sourceFileArray)
-        end
-
-    end
-
-    context "processing licence file" do
-        should "verify file exists" do
-        end
-
-    end
-
     context "processing source files" do
 
         
@@ -110,17 +84,12 @@ class TestLiceProcess < Test::Unit::TestCase
                 puts
                 puts
                 puts "*************************************************"
-                puts "* Note: hash bang test has not been run!        *"
+                puts "* Note: hash bang ID test has not been run!     *"
                 puts "* The test must be run from lice/ or lice/test/ *"
                 puts "*************************************************"
                 puts
             end
         end
-
-
-        should "write out processed licence text to file" do
-        end
-
     end
 
 end
