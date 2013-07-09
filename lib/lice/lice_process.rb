@@ -70,7 +70,7 @@ module Lice
             if fileType 
                 return @@LANG_COMMENTS.fetch fileType
             else
-                if File.exist? fileName
+                if File.exist?(fileName) && File.readable?(fileName)
                     firstLine = nil
                     File.open fileName do |file|
                         firstLine = file.gets

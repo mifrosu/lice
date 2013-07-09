@@ -26,7 +26,7 @@ module Lice
 
         def run
             if File.exists?(@licenceFile) && File.readable?(@licenceFile)
-                puts "yay"
+                processSourceFiles
             else
                 puts "Error: Licence file #{@licenceFile} is not accessible."
                 exit 1
@@ -36,7 +36,7 @@ module Lice
         def processSourceFiles
             @sourceFileArray.each do |src|
                 if File.exists?(src) && File.writable?(src)
-                    puts "yay"
+                    commentArray = Lice::LiceProcess.getComment(src)
                 else
                     puts "Error: #{src} is not accessible."
                 end

@@ -21,15 +21,37 @@ class TestLiceRunner < Test::Unit::TestCase
             assert_equal(%w[src1.rb src2.py src3.cpp], 
                          @testRunner.sourceFileArray)
         end
-
-        #should "check the licence file exists" do
-        #    fileName = "licence.txt"
-        #    File.open(fileName, 'w') do |file| 
-        #        file.puts "Hello"
-        #    end
-        #end
-
     end
+
+    context "the lice runner instance" do
+
+        setup do
+            @fileArray = %w[licence.txt src1.rb src2.rb]
+            @fileArray.each do |file|
+                File.open(file, 'w') do |fileWriter|
+                    puts "writing #{file}"
+                    if file == "licence.txt"
+                        fileWriter.puts "Test licence text"
+                    else
+                        fileWriter.puts "#!/usr/bin/env ruby"
+                    end
+                end
+            end
+        end # setup
+
+        should "process source" do 
+        end
+
+        teardown do
+            @fileArray.each do |file|
+                if File.exists?(file)
+                    puts "deleting #{file}"
+                    File.delete(file)
+                end
+            end
+        end # teardown
+
+    end     # context
 end
 
 
