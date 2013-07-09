@@ -92,6 +92,7 @@ module Lice
                     end
                 end
             end
+            File.rename(fileName + "_new", fileName)
         end
 
         
