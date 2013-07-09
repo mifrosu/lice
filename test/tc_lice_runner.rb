@@ -21,7 +21,15 @@ class TestLiceRunner < Test::Unit::TestCase
             assert_equal(%w[src1.rb src2.py src3.cpp], 
                          @testRunner.sourceFileArray)
         end
-    end
+    end     # context
+
+    context "LiceRunner.getCommentSize" do
+        should "find the comment character size" do
+            commentArray = %w[/* * */]
+            assert_equal(1, Lice::LiceRunner.getCommentSize(commentArray))
+            assert_equal(2, Lice::LiceRunner.getCommentSize(["//"]))
+        end
+    end     # context
 
     context "the lice runner instance" do
 
@@ -29,23 +37,27 @@ class TestLiceRunner < Test::Unit::TestCase
             @fileArray = %w[licence.txt src1.rb src2.rb]
             @fileArray.each do |file|
                 File.open(file, 'w') do |fileWriter|
-                    puts "writing #{file}"
                     if file == "licence.txt"
                         fileWriter.puts "Test licence text"
                     else
-                        fileWriter.puts "#!/usr/bin/env ruby"
+                        fileWriter.puts "#!/usr/bin/env ruby\nsome text"
                     end
                 end
             end
+            @testRunner = Lice::LiceRunner.new(@fileArray)
         end # setup
 
-        should "process source" do 
+        should "process source" do
+           @testRunner.run
+
+
+
         end
 
         teardown do
+            File.delete("licence.txt")
             @fileArray.each do |file|
                 if File.exists?(file)
-                    puts "deleting #{file}"
                     File.delete(file)
                 end
             end
