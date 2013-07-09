@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative "lice_options"
+
 module Lice
 
     class LiceRunner
@@ -9,10 +11,11 @@ module Lice
 
         attr_reader :licenceFile, :sourceFileArray
 
-        def initialize fileNameArray
-            if fileNameArray.size >= 2
-                @licenceFile = fileNameArray.shift
-                @sourceFileArray = fileNameArray
+        def initialize(argv)
+            Lice::LiceOptions.new(argv)
+            @sourceFileArray = argv 
+            if @sourceFileArray.size >=2
+                @licenceFile = @sourceFileArray.shift
             else
                 puts "An insufficient number of file names have been passed."
                 exit 1
