@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require_relative "lice_options"
+require_relative "lice_parser"
+require_relative "lice_process"
 
 module Lice
 
@@ -20,6 +22,26 @@ module Lice
                 puts "An insufficient number of file names have been passed."
                 exit 1
             end
+        end
+
+        def run
+            if File.exists?(@licenceFile) && File.readable?(@licenceFile)
+                puts "yay"
+            else
+                puts "Error: Licence file #{@licenceFile} is not accessible."
+                exit 1
+            end
+        end
+
+        def processSourceFiles
+            @sourceFileArray.each do |src|
+                if File.exists?(src) && File.writable?(src)
+                    puts "yay"
+                else
+                    puts "Error: #{src} is not accessible."
+                end
+            end
+
         end
     end
 end
