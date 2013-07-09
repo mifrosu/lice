@@ -16,11 +16,19 @@ module Lice
 
         attr_reader :liceArray
         
-        def initialize commentSize
+        def initialize(commentSize, fileName)
             @liceArray = Array.new
             @cacheArray = Array.new
+            @fileName = nil
             # allow for comment symbols and 1 space either end
             @maxTextWidth = MAX_WIDTH - (2*commentSize + 2)
+            if File.readable?(fileName)
+                @fileName=fileName
+            else
+                puts "#{fileName} is not readable"
+                exit 1
+            end
+            addFile
         end
 
         def LiceParser.checkLine line
@@ -48,6 +56,16 @@ module Lice
                 breakIndex = line.rindex(/\s/,@maxTextWidth-1)
                 @liceArray.push processLine(line[0..breakIndex-1])
                 @cacheArray.push line[breakIndex+1..-1]
+            end
+        end
+
+        def addFile 
+            if File.exists? @fileName
+                File.open(@fileName) do |fileReader|
+                    while line = fileReader.gets
+                        addLine line
+                    end
+                end
             end
         end
 
