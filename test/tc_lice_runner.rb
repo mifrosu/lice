@@ -34,11 +34,13 @@ class TestLiceRunner < Test::Unit::TestCase
     context "the lice runner instance" do
 
         setup do
-            @fileArray = %w[licence.txt src1.rb src2.rb]
+            @fileArray = %w[licence.txt src1.rb src2 src3.cpp]
             @fileArray.each do |file|
                 File.open(file, 'w') do |fileWriter|
                     if file == "licence.txt"
                         fileWriter.puts "Test licence text"
+                    elsif file == "src3.cpp"
+                        fileWriter.puts "#include <iostream>\n// hello"
                     else
                         fileWriter.puts "#!/usr/bin/env ruby\nsome text"
                     end
@@ -47,12 +49,48 @@ class TestLiceRunner < Test::Unit::TestCase
             @testRunner = Lice::LiceRunner.new(@fileArray)
         end # setup
 
-        should "process source" do
-           @testRunner.run
-
-
-
+        should "process source ruby source with .rb suffix" do
+            @testRunner.run
+            rubyArray = Array.new
+            File.open("src1.rb") do |fileReader|
+                while line = fileReader.gets
+                    rubyArray.push(line)
+                end
+            end
+            assert(rubyArray[0].match /^#!/)
+            assert(rubyArray[2].match /#\s*Test licence text\s*#/)
+            assert(rubyArray[5].match /some text/)
         end
+
+        should "process script file with hash bang line" do
+            @testRunner.run
+            scriptArray = Array.new
+            File.open("src2") do |fileReader|
+                while line = fileReader.gets
+                    scriptArray.push(line)
+                end
+            end
+            assert(scriptArray[0].match /^#!/)
+            assert(scriptArray[2].match /#\s*Test licence text\s*#/)
+            assert(scriptArray[5].match /some text/)
+        end
+
+        should "process a C++ file" do
+            @testRunner.run
+            cppArray = Array.new
+            File.open("src3.cpp") do |fileReader|
+                while line = fileReader.gets
+                    cppArray.push(line)
+                end
+            end
+            assert(cppArray[0].match /^\/\*/)
+            assert(cppArray[1].match /^\* Test/)
+            assert(cppArray[1].match /\*$/)
+            assert(cppArray[2].match /^\*\//)
+            assert(cppArray[4].match /^#include <iostream>/)
+        end
+                
+
 
         teardown do
             File.delete("licence.txt")
