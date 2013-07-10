@@ -14,7 +14,8 @@ module Lice
             :script_style => ["#"],
             :vim_style => ["\""], 
             :haskell => ["{-", " ", "-}"],
-            :percent => ["%"]         # Erlang, TeX
+            :percent => ["%"],         # Erlang, TeX
+            :fortran => ["C"]
         }
 
         @@SUFFIX_ID = {
@@ -38,7 +39,12 @@ module Lice
             "erl" => :percent,
             "hrl" => :percent,
             "hs" => :haskell,
-            "lhs" => :haskell
+            "lhs" => :haskell,
+            "f" => :fortran,
+            "for" => :fortran,
+            "f90" => :fortran,
+            "f95" => :fortran,
+
         }
 
         #attr_reader :licenceFileName

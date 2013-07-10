@@ -31,14 +31,16 @@ class TestLiceProcess < Test::Unit::TestCase
             "src.cxx", "header.hpp", "sharp.cs", "java.java",
             "java.class", "java.jar", "script.rb", "script.py", "perl.pl",
             "perl.pm", "perl.t", "perl.pod", "ruby-vim.vim", "thesis.tex",
-            "erlang.erl", "erlang_header.hrl", "haskell.hs", "hask.lhs"]
+            "erlang.erl", "erlang_header.hrl", "haskell.hs", "hask.lhs",
+            "fortran.f", "fortran.f90", "fortran.f95", "fortran.for"]
             commentHash = {
                 :c_style => ["/*", "*", "*/"],
                 :cpp_style => ["//"],
                 :script_style => ["#"],
                 :vim_style => ["\""], 
                 :haskell => ["{-", " ", "-}"],
-                :percent => ["%"]         # Erlang, TeX
+                :percent => ["%"],         # Erlang, TeX
+                :fortran => ["C"]
             }
             expectedCommentArray = [
                 commentHash[:c_style],
@@ -61,7 +63,11 @@ class TestLiceProcess < Test::Unit::TestCase
                 commentHash[:percent],
                 commentHash[:percent],
                 commentHash[:haskell],
-                commentHash[:haskell]
+                commentHash[:haskell],
+                commentHash[:fortran],
+                commentHash[:fortran],
+                commentHash[:fortran],
+                commentHash[:fortran]
             ]
             for num in (0..testFileNameArray.size-1)
                assert_equal(expectedCommentArray[num],
