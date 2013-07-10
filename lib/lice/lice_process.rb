@@ -50,7 +50,7 @@ module Lice
 
         def LiceProcess.getSuffix fileName
             if fileName.match(/\./)
-                return fileName.split(/\./)[-1]
+                return fileName.split(/\./)[-1].downcase
             else
                 return nil
             end

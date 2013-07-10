@@ -27,7 +27,7 @@ class TestLiceProcess < Test::Unit::TestCase
         end
 
         should "select the correct comment type" do
-            testFileNameArray = ["source.c", "header.h", "source.cpp",
+            testFileNameArray = ["source.c", "header.h", "source.CPP",
             "src.cxx", "header.hpp", "sharp.cs", "java.java",
             "java.class", "java.jar", "script.rb", "script.py", "perl.pl",
             "perl.pm", "perl.t", "perl.pod", "ruby-vim.vim", "thesis.tex",
