@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/lice/lice_runner"
+
+runner = Lice::LiceRunner.new(ARGV)
+runner.run

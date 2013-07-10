@@ -45,10 +45,16 @@ module Lice
         end
 
         def addLine line
+            #if line == "\n" && !@cacheArray.empty?
+            #    @cacheArray[0] = @cacheArray[0] + "\n"
+            #end
             line.chomp!
-            if !@cacheArray.empty?
+            if !@cacheArray.empty? && !@cacheArray[0].match(/^\R/)
                 line = @cacheArray[0] + " " + line
                 @cacheArray.clear 
+            elsif !@cacheArray.empty? && @cacheArray[0].match(/^\R/)
+                line = @cacheArray[0] + line
+                @cacheArray.clear
             end
             if LiceParser.checkLine(line) 
                 @liceArray.push processLine(line) 
@@ -63,6 +69,11 @@ module Lice
             if File.exists? @fileName
                 File.open(@fileName) do |fileReader|
                     while line = fileReader.gets
+                        addLine line
+                    end
+                    while !@cacheArray.empty?
+                        line = @cacheArray[0]
+                        @cacheArray.clear
                         addLine line
                     end
                 end
