@@ -20,4 +20,6 @@ Lice will reflow the licence text to ensure line length (with new comments) does
 ### To do ###
 
 * settings file
+* backup original files option
+* handle unknown input files
 
