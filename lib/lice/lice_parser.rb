@@ -58,29 +58,6 @@ module Lice
             end
         end
 
-        #def addLine line
-        #    if line == "\n" && !@cacheArray.empty?
-        #        @cacheArray[0] = @cacheArray[0] + "\n\n"
-        #    end
-        #    line.chomp!
-        #    if !@cacheArray.empty? && !@cacheArray[0].match(/^\R|\s/)
-        #        line = @cacheArray[0] + " " + line
-        #        @cacheArray.clear 
-        #    elsif !@cacheArray.empty? && @cacheArray[0].match(/^\R|\s/)
-        #        line = @cacheArray[0] + line
-        #        @cacheArray.clear
-        #    end
-        #    if LiceParser.checkLine(line) 
-        #        @liceArray.push(line) 
-        #        #@liceArray.push processLine(line) 
-        #    else
-        #        breakIndex = line.rindex(/\s/,@maxTextWidth-1)
-        #        #@liceArray.push processLine(line[0..breakIndex-1])
-        #        @liceArray.push(line[0..breakIndex-1])
-        #        @cacheArray.push line[breakIndex+1..-1]
-        #    end
-        #end
-
         def processArray
             if !@liceArray.empty?
                 i=0
@@ -99,15 +76,7 @@ module Lice
             end
         end
 
-        def processArrayReflow
-            # each array element
-            # if element.size is < maxWidth, check next element
-            # how much space to fill?
-            # ensure next element exists and is not blank. (paragraph end if so)
-            # remove as many words as possible from next element to
-            # fill gap
-        end
-                        
+                       
         def addFile 
             if File.exists? @fileName
                 File.open(@fileName) do |fileReader|
@@ -120,7 +89,6 @@ module Lice
                         addLine line
                     end
                 end
-                #processArray
             end
         end
 
