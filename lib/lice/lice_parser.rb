@@ -32,11 +32,7 @@ module Lice
         end
 
         def LiceParser.checkLine line
-            if line.size > @maxTextWidth
-                false
-            else
-                true
-            end
+            line.size <= @maxTextWidth
         end
 
         def processLine line
@@ -45,26 +41,73 @@ module Lice
         end
 
         def addLine line
-            #if line == "\n" && !@cacheArray.empty?
-            #    @cacheArray[0] = @cacheArray[0] + "\n"
-            #end
-            line.chomp!
-            if !@cacheArray.empty? && !@cacheArray[0].match(/^\R/)
-                line = @cacheArray[0] + " " + line
-                @cacheArray.clear 
-            elsif !@cacheArray.empty? && @cacheArray[0].match(/^\R/)
-                line = @cacheArray[0] + line
-                @cacheArray.clear
-            end
-            if LiceParser.checkLine(line) 
-                @liceArray.push processLine(line) 
+            if LiceParser.checkLine(line)
+                if !line.match(/^R/)
+                    line.chomp!
+                elsif line.strip == ""
+                    @liceArray.push(processLine(" "))
+                    return
+                end
+                @liceArray.push(processLine(line))
             else
-                breakIndex = line.rindex(/\s/,@maxTextWidth-1)
-                @liceArray.push processLine(line[0..breakIndex-1])
-                @cacheArray.push line[breakIndex+1..-1]
+                # we find the first index < maxTextWidth-1 that is a space 
+                breakIndex = line.rindex(/\s/, @maxTextWidth-1) 
+                @liceArray.push(processLine(line[0..breakIndex-1]))
+                line = line[breakIndex+1..-1]
+                addLine(line)
             end
         end
 
+        #def addLine line
+        #    if line == "\n" && !@cacheArray.empty?
+        #        @cacheArray[0] = @cacheArray[0] + "\n\n"
+        #    end
+        #    line.chomp!
+        #    if !@cacheArray.empty? && !@cacheArray[0].match(/^\R|\s/)
+        #        line = @cacheArray[0] + " " + line
+        #        @cacheArray.clear 
+        #    elsif !@cacheArray.empty? && @cacheArray[0].match(/^\R|\s/)
+        #        line = @cacheArray[0] + line
+        #        @cacheArray.clear
+        #    end
+        #    if LiceParser.checkLine(line) 
+        #        @liceArray.push(line) 
+        #        #@liceArray.push processLine(line) 
+        #    else
+        #        breakIndex = line.rindex(/\s/,@maxTextWidth-1)
+        #        #@liceArray.push processLine(line[0..breakIndex-1])
+        #        @liceArray.push(line[0..breakIndex-1])
+        #        @cacheArray.push line[breakIndex+1..-1]
+        #    end
+        #end
+
+        def processArray
+            if !@liceArray.empty?
+                i=0
+                @liceArray.each do |element|
+                    element.chomp!
+                    if element.match /.*\n\n.*/
+                        breakIndex = element =~ /\n\n/
+                        @liceArray.insert(i+1, " ".ljust(@maxTextWidth))
+                        @liceArray.insert(i+2, 
+                                          element[breakIndex+2..-1])
+                        @liceArray[i]=element[0..breakIndex-1]
+                    end
+                    @liceArray[i] = @liceArray[i].ljust(@maxTextWidth)
+                    i+=1
+                end
+            end
+        end
+
+        def processArrayReflow
+            # each array element
+            # if element.size is < maxWidth, check next element
+            # how much space to fill?
+            # ensure next element exists and is not blank. (paragraph end if so)
+            # remove as many words as possible from next element to
+            # fill gap
+        end
+                        
         def addFile 
             if File.exists? @fileName
                 File.open(@fileName) do |fileReader|
@@ -77,6 +120,7 @@ module Lice
                         addLine line
                     end
                 end
+                #processArray
             end
         end
 
